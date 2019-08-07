@@ -12,7 +12,7 @@ spec:
         spec:
           containers:
             - name: mxnet
-              image: mxjob/mxnet:gpu
+              image: mxjob/mxnet:cpu
     Server:
       replicas: 1
       restartPolicy: Never
@@ -20,7 +20,7 @@ spec:
         spec:
           containers:
             - name: mxnet
-              image: mxjob/mxnet:gpu
+              image: mxjob/mxnet:cpu
     Worker:
       replicas: 1
       restartPolicy: Never
@@ -28,7 +28,7 @@ spec:
         spec:
           containers:
             - name: mxnet
-              image: mxjob/mxnet:gpu
+              image: mxjob/mxnet:cpu
               command:
               - "python"
               args:
@@ -39,8 +39,3 @@ spec:
               - "2"
               - "--kv-store"
               - "dist_device_sync"
-              - "--gpus"
-              - "0"
-              resources:
-                limits:
-                  nvidia.com/gpu: 1

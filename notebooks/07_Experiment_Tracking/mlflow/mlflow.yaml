@@ -1,0 +1,73 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mlflow-tracking-server
+  namespace: kubeflow
+spec:
+  selector:
+    matchLabels:
+      app: mlflow-tracking-server
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mlflow-tracking-server
+    spec:
+      containers:
+      - name: mlflow-tracking-server
+        image: seedjeffwan/mlflow-tracking-server:1.0.0
+        ports:
+        - containerPort: 5000
+        env:
+        # FILE_DIR can not be mount dir, MLFLOW need a empty dir but mount dir has lost+found
+        - name: FILE_DIR
+          value: /mnt/mlflow/manifest
+        - name: AWS_MLFLOW_BUCKET
+          value: kubeflow-pipeline-data
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: aws-secret
+              key: AWS_ACCESS_KEY_ID
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: aws-secret
+              key: AWS_SECRET_ACCESS_KEY
+        volumeMounts:
+        - mountPath: /mnt/mlflow
+          name: mlflow-manifest-storage
+      volumes:
+        - name: mlflow-manifest-storage
+          persistentVolumeClaim:
+            claimName: mlflow-manifest-pvc
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mlflow-tracking-server
+  namespace: kubeflow
+  labels:
+    app: mlflow-tracking-server
+spec:
+  ports:
+  - port: 5000
+    protocol: TCP
+  selector:
+    app: mlflow-tracking-server
+
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: mlflow-manifest-pvc
+  namespace: kubeflow
+spec:
+  storageClassName: gp2
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi

@@ -15,6 +15,11 @@ This repo is a Kubeflow Workshop on EKS and it will covers most of the cutting e
 * Install [eksctl](https://github.com/weaveworks/eksctl) (version 0.1.31 or newer)
 
 
+## Setups
+
+1. [Create an EKS cluster](cluster.md) or bring your own EKS cluster.
+2. [Setup up Kubeflow](kubeflow.md)
+
 ## Labs
 - [Model Development in Jupyter Notebook](notebooks/01_Jupyter_Notebook)
 - [Fairing](notebooks/02_Fairing)

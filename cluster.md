@@ -1,37 +1,57 @@
-This guidance shows how to run an AWS EKS cluster for kubeflow workshop. Consider the real world use case, we will create the EKS cluster in a cost effective way using Spot instance which can save up to 90% comparing to On-Demand price. 
+This guidance shows how to run an AWS EKS cluster for kubeflow workshop.
 
-# EKS Optimized AMI image with GPU support
-# eksctl CLI Tools
+## EKS Optimized AMI image with GPU support
+The Amazon EKS-optimized AMI with GPU support is built on top of the standard Amazon EKS-optimized AMI, and is configured to serve as an optional image for Amazon EKS worker nodes to support GPU workloads.
 
+Please subscribe it in [AWS Marketplace](https://aws.amazon.com/marketplace/pp/B07GRHFXGM).
 
-## EKS Cluster
-First we need to create a Kubernetes cluster that consists from mixed nodes, CPU nodes for management and generic Kubernetes workload and acclerate GPU nodes to run GPU intensive tasks, like machine learning training, High Performance Computing(HPC) jobs. 
+## eksctl config
+In this workshop, we highly recommend you to create an EKS cluster using eksctl CLI tool. While, you can also create AWS EKS cluster, using AWS EKS CLI, CloudFormation or Terraform, AWS CDK.
 
-These node groups should be able to scale on demand (scale out and scale in) for generic nodes, and from 0 to required number and back to 0 for expensive GPU instances. More than that, in order to do it in cost effective way, we are going to use Amazon EC2 Spot Instances both for generic nodes and GPU nodes.
+It is possible to pass all parameters to the tool as CLI flags or configuration file. Using configuration file makes process more repeatable and automation friendly.
 
+```yaml
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+metadata:
+  name: kfworkshop
+  region: us-west-2
+  version: '1.13'
+# If your region has multiple availability zones, you can specify 3 of them.
+#availabilityZones: ["us-west-2b", "us-west-2c", "us-west-2d"]
 
-## The Workflow
+# NodeGroup holds all configuration attributes that are specific to a nodegroup
+# You can have several node group in your cluster.
+nodeGroups:
+  - name: cpu-nodegroup
+    instanceType: m5.xlarge
+    desiredCapacity: 2
+    minSize: 0
+    maxSize: 4
+    volumeSize: 30
+    ssh:
+      allow: true
+      publicKeyPath: '~/.ssh/id_rsa.pub'
+
+  # Example of GPU node group
+  - name: Tesla-V100
+    instanceType: p3.8xlarge
+    availabilityZones: ["us-west-2b"]
+    desiredCapacity: 0
+    minSize: 0
+    maxSize: 4
+    volumeSize: 50
+    ssh:
+      allow: true
+      publicKeyPath: '~/.ssh/id_rsa.pub'
+```
+> Note: we create one CPU and one GPU node groups. GPU desired capacity is set to 0 and you can scale up GPU node groups to use acceslarator nodes.
+> Most of the experiements will use CPU here can be done with CPU.
 
 ### Create EKS Cluster
 
-In this workshop, we highly recommend you to create an EKS cluster using eksctl CLI tool. While, you can also create AWS EKS cluster, using AWS EKS CLI, CloudFormation or Terraform, AWS CDK. 
-
-It is possible to pass all parameters to the tool as CLI flags or configuration file. Using configuration file makes process more repeatable and automation friendly.
+Run this command to create EKS cluster
 
 ```
 eksctl create cluster -f cluster.yaml
 ```
-
-What would give to you 
-
-* 
-* Scale from 0
-* Auto configure policy for IAM, ALB, Storage, etc.
-
-
-### Install Kubeflow
-The kfctl golang client is CLI tool to install kubeflow. Please download current version v0.6.1 here based on your platform. Choose binary based on your platform. 
-
-### Create aws secret in the cluster
-
-Reference: https://alexei-led.github.io/post/eks_gpu_spot/

@@ -18,7 +18,7 @@ metadata:
   region: us-west-2
   version: '1.13'
 # If your region has multiple availability zones, you can specify 3 of them.
-#availabilityZones: ["us-west-2b", "us-west-2c", "us-west-2d"]
+availabilityZones: ["us-west-2b", "us-west-2c", "us-west-2d"]
 
 # NodeGroup holds all configuration attributes that are specific to a nodegroup
 # You can have several node group in your cluster.
@@ -29,21 +29,22 @@ nodeGroups:
     minSize: 0
     maxSize: 4
     volumeSize: 30
-    ssh:
-      allow: true
-      publicKeyPath: '~/.ssh/id_rsa.pub'
+    # ssh:
+    #   allow: true
+    #   publicKeyPath: '~/.ssh/id_rsa.pub'
 
   # Example of GPU node group
   - name: Tesla-V100
     instanceType: p3.8xlarge
+    # Make sure the availability zone here is one of cluster availability zones.
     availabilityZones: ["us-west-2b"]
     desiredCapacity: 0
     minSize: 0
     maxSize: 4
     volumeSize: 50
-    ssh:
-      allow: true
-      publicKeyPath: '~/.ssh/id_rsa.pub'
+    # ssh:
+    #   allow: true
+    #   publicKeyPath: '~/.ssh/id_rsa.pub'
 ```
 > Note: we create one CPU and one GPU node groups. GPU desired capacity is set to 0 and you can scale up GPU node groups to use acceslarator nodes.
 > Most of the experiements will use CPU here can be done with CPU.

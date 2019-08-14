@@ -1,4 +1,4 @@
-piVersion: "kubeflow.org/v1"
+apiVersion: "kubeflow.org/v1"
 kind: "PyTorchJob"
 metadata:
   name: "distributed-pytorch-job"
@@ -8,26 +8,32 @@ spec:
       replicas: 1
       restartPolicy: OnFailure
       template:
+        metadata:
+          annotations:
+            sidecar.istio.io/inject: "false"
         spec:
           containers:
             - name: pytorch
-              image: gcr.io/<your_project>/pytorch_dist_mnist:latest
+              image: gcr.io/kubeflow-ci/pytorch-dist-mnist_test:1.0
               args: ["--backend", "gloo"]
               # Comment out the below resources to use the CPU.
-              resources:
-                limits:
-                  nvidia.com/gpu: 1
+              #resources:
+                #limits:
+                  #nvidia.com/gpu: 1
     Worker:
       replicas: 1
       restartPolicy: OnFailure
       template:
+        metadata:
+          annotations:
+            sidecar.istio.io/inject: "false"
         spec:
           containers:
             - name: pytorch
-              image: gcr.io/<your_project>/pytorch_dist_mnist:latest
+              image: gcr.io/kubeflow-ci/pytorch-dist-mnist_test:1.0
               args: ["--backend", "gloo"]
               # Comment out the below resources to use the CPU.
-              resources:
-                limits:
-                  nvidia.com/gpu: 1
+              #resources:
+                #limits:
+                  #nvidia.com/gpu: 1
 

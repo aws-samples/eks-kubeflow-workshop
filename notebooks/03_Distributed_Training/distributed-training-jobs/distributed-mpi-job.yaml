@@ -1,18 +1,18 @@
----
-apiVersion: kubeflow.org/v1alpha2
+apiVersion: kubeflow.org/v1alpha1
 kind: MPIJob
 metadata:
-  labels:
-    ksonnet.io/component: tf-resnet50-horovod-job
-  name: tf-resnet50-horovod-job
-  namespace: kubeflow
+  name: distributed-mpi-job
 spec:
   replicas: 2
   template:
+    metadata: 
+      annotations:
+        sidecar.istio.io/inject: "false"
     spec:
       containers:
       - command:
         - mpirun
+        - --allow-run-as-root
         - -mca
         - btl_tcp_if_exclude
         - lo

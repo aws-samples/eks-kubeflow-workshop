@@ -1,53 +1,55 @@
-apiVersion: "kubeflow.org/v1alpha1"
-kind: StudyJob
+apiVersion: "kubeflow.org/v1alpha2"
+kind: Experiment
 metadata:
-  namespace: kubeflow
   labels:
     controller-tools.k8s.io: "1.0"
-  name: random-search-job
+  name: bayesopt-example
 spec:
-  studyName: random-search-job
-  owner: crd
-  optimizationtype: maximize
-  objectivevaluename: Validation-accuracy
-  optimizationgoal: 0.99
-  requestcount: 4
-  metricsnames:
-    - accuracy
-  parameterconfigs:
+  objective:
+    type: maximize
+    goal: 0.99
+    objectiveMetricName: Validation-accuracy
+    additionalMetricNames:
+      - accuracy
+  algorithm:
+    algorithmName: bayesianoptimization
+    algorithmSettings:
+      - name: "burn_in"
+        value: "5"
+  parallelTrialCount: 3
+  maxTrialCount: 12
+  maxFailedTrialCount: 3
+  parameters:
     - name: --lr
-      parametertype: double
-      feasible:
+      parameterType: double
+      feasibleSpace:
         min: "0.01"
         max: "0.03"
     - name: --num-layers
-      parametertype: int
-      feasible:
+      parameterType: int
+      feasibleSpace:
         min: "2"
         max: "5"
     - name: --optimizer
-      parametertype: categorical
-      feasible:
+      parameterType: categorical
+      feasibleSpace:
         list:
         - sgd
         - adam
         - ftrl
-  suggestionSpec:
-    suggestionAlgorithm: "random"
-    requestNumber: 3        
-  workerSpec:
+  trialTemplate:
     goTemplate:
         rawTemplate: |-
           apiVersion: batch/v1
           kind: Job
           metadata:
-            name: {{.WorkerID}}
-            namespace: kubeflow
+            name: {{.Trial}}
+            namespace: {{.NameSpace}}
           spec:
             template:
               spec:
                 containers:
-                - name: {{.WorkerID}}
+                - name: {{.Trial}}
                   image: katib/mxnet-mnist-example
                   command:
                   - "python"

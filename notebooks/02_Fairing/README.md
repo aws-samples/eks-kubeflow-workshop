@@ -15,7 +15,14 @@ Be default, istio inject is enabled at the namespace level. Add `istio-injection
     istio-injection: disabled
 ```
 
+Check [Disable istio-injection in namespace profile controller creates?](https://github.com/kubeflow/kubeflow/issues/3935) for details
+
 
 ### Use container image with awscli, docker client
 
 I build a container image with awscli and docker support, Please use `seedjeffwan/tensorflow-1.13.1-notebook-cpu:awscli-v2` as a custom image to provision your notebook. I am working on upstream patch it will be ready soon.
+
+
+### ECR permission
+
+Since fairing library will create ECR repository and upload repository to ECR. Grant `AmazonEC2ContainerRegistryFullAccess` to your node group role.  (We will use simplest policies instead later)

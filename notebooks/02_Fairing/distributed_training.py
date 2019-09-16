@@ -67,7 +67,7 @@ if __name__ == '__main__':
         fairing.config.set_builder(name='append', registry=DOCKER_REGISTRY,
                            base_image='tensorflow/tensorflow:1.14.0-py3')
         fairing.config.set_deployer(
-            name='tfjob', namespace='default', worker_count=1, ps_count=1)
+            name='tfjob', worker_count=1, ps_count=1)
         fairing.config.run()
     else:
         remote_train = TensorflowModel()

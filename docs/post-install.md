@@ -1,4 +1,9 @@
+
+> Note: In v0.6.2 kubeflow release, there's a profile kubeflow-anonymous created by default in the installation and you can skip this post setup. We suggest you use `kubeflow-anonymous` as default namespace for labs. If you'd like to create your own profile, please follow following steps.
+
+
 ## Create a user profile
+
 Note: change `jiaxin` to your username.
 
 ```yaml
@@ -44,17 +49,4 @@ roleRef:
   kind: Role
   name: notebook-access
   apiGroup: rbac.authorization.k8s.io
-```
-
-## Create a notebook
-
-
-
-
-## Clone workshop repository into your workspace
-
-Open a terminal in Jupyter notebook,
-
-```
-git clone https://github.com/Jeffwan/kubeflow-eks-workshop.git
 ```

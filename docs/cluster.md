@@ -1,11 +1,13 @@
 This guidance shows how to run an AWS EKS cluster for kubeflow workshop.
 
 ## EKS Optimized AMI image with GPU support
+
 The Amazon EKS-optimized AMI with GPU support is built on top of the standard Amazon EKS-optimized AMI, and is configured to serve as an optional image for Amazon EKS worker nodes to support GPU workloads.
 
 Please subscribe it in [AWS Marketplace](https://aws.amazon.com/marketplace/pp/B07GRHFXGM).
 
 ## eksctl config
+
 In this workshop, we highly recommend you to create an EKS cluster using eksctl CLI tool. While, you can also create AWS EKS cluster, using AWS EKS CLI, CloudFormation or Terraform, AWS CDK.
 
 It is possible to pass all parameters to the tool as CLI flags or configuration file. Using configuration file makes process more repeatable and automation friendly.
@@ -28,7 +30,7 @@ nodeGroups:
     desiredCapacity: 2
     minSize: 0
     maxSize: 4
-    volumeSize: 30
+    volumeSize: 50
     # ssh:
     #   allow: true
     #   publicKeyPath: '~/.ssh/id_rsa.pub'

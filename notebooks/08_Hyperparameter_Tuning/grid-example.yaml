@@ -1,11 +1,10 @@
-apiVersion: "kubeflow.org/v1alpha2"
+apiVersion: "kubeflow.org/v1alpha3"
 kind: Experiment
 metadata:
+  labels:
+    controller-tools.k8s.io: "1.0"
   name: grid-example
 spec:
-  parallelTrialCount: 3
-  maxTrialCount: 12
-  maxFailedTrialCount: 3
   objective:
     type: maximize
     goal: 0.99
@@ -14,11 +13,28 @@ spec:
       - accuracy
   algorithm:
     algorithmName: grid
-    algorithmSettings:
-      - name: --num-layers
-        value: "5"
-      - name: --optimizer
-        value: "3"
+  parallelTrialCount: 3
+  maxTrialCount: 12
+  maxFailedTrialCount: 3
+  parameters:
+    - name: --lr
+      parameterType: double
+      feasibleSpace:
+        min: "0.001"
+        max: "0.01"
+        step: "0.001"
+    - name: --num-layers
+      parameterType: int
+      feasibleSpace:
+        min: "2"
+        max: "5"
+    - name: --optimizer
+      parameterType: categorical
+      feasibleSpace:
+        list:
+        - sgd
+        - adam
+        - ftrl
   trialTemplate:
     goTemplate:
         rawTemplate: |-
@@ -32,7 +48,7 @@ spec:
               spec:
                 containers:
                 - name: {{.Trial}}
-                  image: katib/mxnet-mnist-example
+                  image: docker.io/katib/mxnet-mnist-example
                   command:
                   - "python"
                   - "/mxnet/example/image-classification/train_mnist.py"
@@ -43,21 +59,3 @@ spec:
                   {{- end}}
                   {{- end}}
                 restartPolicy: Never
-  parameters:
-    - name: --lr
-      parameterType: double
-      feasibleSpace:
-        min: "0.01"
-        max: "0.03"
-    - name: --num-layers
-      parameterType: int
-      feasibleSpace:
-        min: "1"
-        max: "15"
-    - name: --optimizer
-      parameterType: categorical
-      feasibleSpace:
-        list:
-        - sgd
-        - adam
-        - ftrl

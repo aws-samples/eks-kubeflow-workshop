@@ -1,9 +1,10 @@
-apiVersion: "kubeflow.org/v1alpha2"
+apiVersion: "kubeflow.org/v1alpha3"
 kind: Experiment
 metadata:
   name: hyperband-example
 spec:
   parallelTrialCount: 9
+  maxTrialCount: 9
   objective:
     type: maximize
     goal: 0.99
@@ -13,7 +14,7 @@ spec:
   algorithm:
     algorithmName: hyperband
     algorithmSettings:
-      - name: "resourceName"
+      - name: "resource_name"
         value: "--num-epochs"
       - name: "eta"
         value: "3"
@@ -39,8 +40,8 @@ spec:
         - adam
         - ftrl
     - name: --num-epochs
-      parametertype: int
-      feasible:
+      parameterType: int
+      feasibleSpace:
         min: "20"
         max: "20"
   trialTemplate:

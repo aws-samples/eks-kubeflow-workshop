@@ -1,11 +1,10 @@
-apiVersion: "kubeflow.org/v1alpha2"
+apiVersion: "kubeflow.org/v1alpha3"
 kind: Experiment
 metadata:
-  name: random-search-example
+  labels:
+    controller-tools.k8s.io: "1.0"
+  name: random-example
 spec:
-  parallelTrialCount: 3
-  maxTrialCount: 12
-  maxFailedTrialCount: 3
   objective:
     type: maximize
     goal: 0.99
@@ -14,30 +13,9 @@ spec:
       - accuracy
   algorithm:
     algorithmName: random
-  trialTemplate:
-    goTemplate:
-        rawTemplate: |-
-          apiVersion: batch/v1
-          kind: Job
-          metadata:
-            name: {{.Trial}}
-            namespace: {{.NameSpace}}
-          spec:
-            template:
-              spec:
-                containers:
-                - name: {{.Trial}}
-                  image: katib/mxnet-mnist-example
-                  command:
-                  - "python"
-                  - "/mxnet/example/image-classification/train_mnist.py"
-                  - "--batch-size=64"
-                  {{- with .HyperParameters}}
-                  {{- range .}}
-                  - "{{.Name}}={{.Value}}"
-                  {{- end}}
-                  {{- end}}
-                restartPolicy: Never
+  parallelTrialCount: 3
+  maxTrialCount: 12
+  maxFailedTrialCount: 3
   parameters:
     - name: --lr
       parameterType: double
@@ -56,3 +34,27 @@ spec:
         - sgd
         - adam
         - ftrl
+  trialTemplate:
+    goTemplate:
+        rawTemplate: |-
+          apiVersion: batch/v1
+          kind: Job
+          metadata:
+            name: {{.Trial}}
+            namespace: {{.NameSpace}}
+          spec:
+            template:
+              spec:
+                containers:
+                - name: {{.Trial}}
+                  image: docker.io/katib/mxnet-mnist-example
+                  command:
+                  - "python"
+                  - "/mxnet/example/image-classification/train_mnist.py"
+                  - "--batch-size=64"
+                  {{- with .HyperParameters}}
+                  {{- range .}}
+                  - "{{.Name}}={{.Value}}"
+                  {{- end}}
+                  {{- end}}
+                restartPolicy: Never

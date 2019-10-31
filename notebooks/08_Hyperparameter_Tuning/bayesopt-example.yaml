@@ -1,4 +1,4 @@
-apiVersion: "kubeflow.org/v1alpha2"
+apiVersion: "kubeflow.org/v1alpha3"
 kind: Experiment
 metadata:
   labels:
@@ -14,8 +14,8 @@ spec:
   algorithm:
     algorithmName: bayesianoptimization
     algorithmSettings:
-      - name: "burn_in"
-        value: "5"
+      - name: "random_state"
+        value: "10"
   parallelTrialCount: 3
   maxTrialCount: 12
   maxFailedTrialCount: 3
@@ -50,7 +50,7 @@ spec:
               spec:
                 containers:
                 - name: {{.Trial}}
-                  image: katib/mxnet-mnist-example
+                  image: docker.io/katib/mxnet-mnist-example
                   command:
                   - "python"
                   - "/mxnet/example/image-classification/train_mnist.py"

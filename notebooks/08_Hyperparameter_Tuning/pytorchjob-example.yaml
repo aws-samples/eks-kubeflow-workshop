@@ -1,4 +1,4 @@
-apiVersion: "kubeflow.org/v1alpha2"
+apiVersion: "kubeflow.org/v1alpha3"
 kind: Experiment
 metadata:
   name: pytorchjob-example
@@ -13,7 +13,6 @@ spec:
   algorithm:
     algorithmName: random
   trialTemplate:
-    retain: true
     goTemplate:
         rawTemplate: |-
           apiVersion: "kubeflow.org/v1"

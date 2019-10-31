@@ -1,13 +1,45 @@
 
-> Note: In v0.6.2 kubeflow release, there's a profile kubeflow-anonymous created by default in the installation and you can skip this post setup. We suggest you use `kubeflow-anonymous` as default namespace for labs. If you'd like to create your own profile, please follow following steps.
+> Note: In v0.7.0 kubeflow release, there's a profile `anonymous-kubeflow-org` created by default in the installation and you can skip this post setup. We suggest you use `anonymous-kubeflow-org` as default namespace for labs. If you'd like to create your own profile, please follow following steps.
 
 
-## Create a user profile
+## Grant your notebook service account access to entire namespace
+
+In order to submit arbitrary custom job types, we need to grant `anonymous-kubeflow-org` permissions.
+
+```
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  namespace: anonymous-kubeflow-org
+  name: notebook-access
+rules:
+- apiGroups: ["*"] # "" indicates the core API group
+  resources: ["*"]
+  verbs: ["*"]
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: notebook-access-binding
+  namespace: anonymous-kubeflow-org
+subjects:
+- kind: ServiceAccount
+  name: default-editor
+  namespace: anonymous-kubeflow-org
+roleRef:
+  kind: Role
+  name: notebook-access
+  apiGroup: rbac.authorization.k8s.io
+```
+
+Save the file and `kubectl apply -f bindings.yaml`
+
+## Create a new user profile
 
 Note: change `jiaxin` to your username.
 
 ```yaml
-apiVersion: kubeflow.org/v1alpha1
+apiVersion: kubeflow.org/v1beta1
 kind: Profile
 metadata:
   name: jiaxin
@@ -21,32 +53,4 @@ spec:
 kubectl apply -f profile.yaml
 ```
 
-## Grant your notebook service account access to entire namespace
-
-Note: change `jiaxin` to your username.
-
-```
-kind: Role
-apiVersion: rbac.authorization.k8s.io/v1beta1
-metadata:
-  namespace: jiaxin
-  name: notebook-access
-rules:
-- apiGroups: ["*"] # "" indicates the core API group
-  resources: ["*"]
-  verbs: ["*"]
----
-kind: RoleBinding
-apiVersion: rbac.authorization.k8s.io/v1beta1
-metadata:
-  name: notebook-access-binding
-  namespace: jiaxin
-subjects:
-- kind: ServiceAccount
-  name: default-editor
-  namespace: jiaxin
-roleRef:
-  kind: Role
-  name: notebook-access
-  apiGroup: rbac.authorization.k8s.io
-```
+Beside profile, you need to create Role and RoleBindings as well for user `jiaxin`. Replace `anonymous-kubeflow-org` with `jiaxin`

@@ -7,7 +7,7 @@ I build a container image with awscli and docker support, Please use `seedjeffwa
 
 ### ECR permission
 
-Since fairing library will create ECR repository and upload repository to ECR. Grant `AmazonEC2ContainerRegistryFullAccess` to your node group role.  (We will use simplest policies instead later)
+Since fairing library will create ECR repository, upload repository to ECR, and put objects in S3 bucket. Grant `AmazonEC2ContainerRegistryFullAccess` and `AmazonS3FullAccess` to your node group role.  (We will use simplest policies instead later)
 
 ### Disable istio inject for your namespace(Optional)
 In order to succesfully run fairing, you need to label your namespace. `anonymous` is the namespace we want to use, change to your namespace if you use a different one

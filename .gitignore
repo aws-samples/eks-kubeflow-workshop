@@ -96,6 +96,9 @@ celerybeat-schedule
 # SageMath parsed files
 *.sage.py
 
+# MacOS DS_Store
+*.DS_Store
+
 # Environments
 .env
 .venv

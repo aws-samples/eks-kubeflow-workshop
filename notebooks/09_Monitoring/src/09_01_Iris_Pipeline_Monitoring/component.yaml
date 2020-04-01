@@ -1,0 +1,23 @@
+name: 'IRIS Classification Task'
+description: | 
+  Data Preprocess, Train, and Evaluate IRIS dataset
+inputs:
+  - name: aws_region
+    description: 'The region of AWS Account'
+    default: 'us-west-2'
+  - name: s3_bucket
+    description: 'The S3 bucket name'
+    default: ''
+outputs:
+  - {name: model_artifact_url, description: 'Model ARTIFACT URL'}
+implementation:
+  container: 
+    image: chuckshow/iris-pipeline:latest
+    command: ['python']
+    args: [
+      model.py,
+      --aws_region, {inputValue: aws_region},
+      --s3_bucket, {inputValue: s3_bucket}
+    ]
+    fileOutputs:
+      mlpipeline-ui-metadata: '/mlpipeline-ui-metadata.json'

@@ -1,5 +1,8 @@
 ## Kubeflow Labs on EKS
 
+### Use Fairing Kaniko Cloud Builder with Kubeflow on AWS
+I build ecr container image by using Fairing Kaniko, and then utilize the image for training job.
+
 ### Use container image with awscli, docker client
 
 I build a container image with awscli and docker support, Please use `seedjeffwan/tensorflow-1.13.1-notebook-cpu:awscli-v2` as a custom image to provision your notebook. I am working on upstream patch it will be ready soon.

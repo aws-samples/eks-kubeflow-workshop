@@ -9,7 +9,7 @@ inputs:
     description: 'The S3 bucket name'
     default: ''
 outputs:
-  - {name: model_artifact_url, description: 'Model ARTIFACT URL'}
+  - {name: mlpipeline-ui-metadata, description: 'Pipeline ARTIFACT URL'}
 implementation:
   container: 
     image: chuckshow/iris-pipeline:latest

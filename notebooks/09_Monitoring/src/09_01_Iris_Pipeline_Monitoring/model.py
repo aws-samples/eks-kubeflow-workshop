@@ -7,6 +7,7 @@ import boto3
 import tensorflow as tf
 import datetime
 import argparse
+import ssl
 
 from sklearn import model_selection
 from sklearn.metrics import confusion_matrix, roc_curve
@@ -209,6 +210,9 @@ def main(argv=None):
     args = parser.parse_args()
 
     logging.getLogger().setLevel(logging.INFO)
+    
+    # Bypass ssl verification
+    ssl._create_default_https_context = ssl._create_unverified_context    
 
     # Preprocess
     X_train, X_test, y_train, y_test = preprocess(args)

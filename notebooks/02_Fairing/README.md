@@ -12,18 +12,25 @@ I build a container image with awscli and docker support, Please use `seedjeffwa
 
 Since fairing library will create ECR repository, upload repository to ECR, and put objects in S3 bucket. Grant `AmazonEC2ContainerRegistryFullAccess` and `AmazonS3FullAccess` to your node group role.  (We will use simplest policies instead later)
 
-### Disable istio inject for your namespace(Optional)
-In order to succesfully run fairing, you need to label your namespace. `anonymous` is the namespace we want to use, change to your namespace if you use a different one
+We also provide an option to enable IAM Roles for Service Account. If you configure kubeflow from [option 1](https://www.kubeflow.org/docs/aws/deploy/install-kubeflow/#option-1-use-iam-for-service-account), then you can attach IAM Role `kf-user-${cluster_name}` with below policies which enables ECR and S3 operation.
 
 ```
- kubectl edit ns anonymous
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ecr:*",
+                "cloudtrail:LookupEvents"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": "s3:*",
+            "Resource": "*"
+        }
+    ]
+}
 ```
-
-Be default, istio inject is enabled at the namespace level. Add `istio-injection: disabled` to avoid istio inject sidecar pods.
-
-```
-  labels:
-    istio-injection: disabled
-```
-
-Check [Disable istio-injection in namespace profile controller creates?](https://github.com/kubeflow/kubeflow/issues/3935) for details

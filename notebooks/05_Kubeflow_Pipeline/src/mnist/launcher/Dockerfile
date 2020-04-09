@@ -20,6 +20,8 @@ RUN apt-get update -y && \
 
 RUN mkdir /ml && \
     wget https://raw.githubusercontent.com/kubeflow/pipelines/master/components/kubeflow/launcher/src/launch_tfjob.py && \
-    cp launch_tfjob.py /ml
+    cp launch_tfjob.py /ml && \ 
+    wget https://raw.githubusercontent.com/kubeflow/pipelines/master/components/kubeflow/common/launch_crd.py && \
+    cp launch_crd.py /ml
 
 ENTRYPOINT ["python", "/ml/launch_tfjob.py"]

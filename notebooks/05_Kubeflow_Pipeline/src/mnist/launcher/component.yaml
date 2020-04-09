@@ -14,7 +14,6 @@ inputs:
 - {name: Evaluator Spec,            type: JSON,     default: '{}',      description: 'TFJob evaluator replicaSpecs.'}
 - {name: Tfjob Timeout Minutes,     type: Integer,  default: 1440,      description: 'Time in minutes to wait for the TFJob to complete.'}
 - {name: Delete Finished Tfjob,     type: Bool,     default: 'True' ,   description: 'Whether to delete the tfjob after it is finished.'}
-- {name: s3bucket,                 type: String,   default: 's3://eks-kubeflow-workshop-data/iris-example/tb-logs',         description: 'The S3 bucket name'}
 outputs:
 - {name: mlpipeline-ui-metadata, description: 'Model ARTIFACT OUTPUT'}
 implementation:
@@ -34,8 +33,7 @@ implementation:
       --chiefSpec,                {inputValue: Chief Spec},
       --evaluatorSpec,            {inputValue: Evaluator Spec},
       --tfjobTimeoutMinutes,      {inputValue: Tfjob Timeout Minutes},
-      --deleteAfterDone,          {inputValue: Delete Finished Tfjob},
-      --s3_bucket,                {inputValue: s3bucket},
+      --deleteAfterDone,          {inputValue: Delete Finished Tfjob}
     ]
     fileOutputs:
       mlpipeline-ui-metadata: '/mlpipeline-ui-metadata.json'

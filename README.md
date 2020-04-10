@@ -30,7 +30,7 @@ This repo is a Kubeflow Workshop on EKS and it will covers most of the cutting e
 - Serving
 - [Experiment Tracking](notebooks/07_Experiment_Tracking)
 - [HyperParameter Tuning](notebooks/08_Hyperparameter_Tuning)
-- Monitoring
+- [Monitoring](notebooks/09_Monitoring)
 - Logs
 
 ## Clean up

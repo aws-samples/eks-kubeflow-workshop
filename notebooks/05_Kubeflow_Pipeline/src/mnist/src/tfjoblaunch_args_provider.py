@@ -1,4 +1,4 @@
-def tfjoblauncher_args(step, s3bucketexportpath, args):
+def tfjoblauncher_args(step, s3bucketexportpath, args, aws_region="us-west-2"):
     chief = {
         "replicas": 1,
         "restartPolicy": "OnFailure",
@@ -23,7 +23,7 @@ def tfjoblauncher_args(step, s3bucketexportpath, args):
                         "env": [
                             {
                                 "name": "AWS_REGION",
-                                "value": "us-west-2"
+                                "value": aws_region
                             },
                             {
                                 "name": "AWS_ACCESS_KEY_ID",
@@ -74,7 +74,7 @@ def tfjoblauncher_args(step, s3bucketexportpath, args):
                         "env": [
                             {
                                 "name": "AWS_REGION",
-                                "value": "us-west-2"
+                                "value": aws_region
                             },
                             {
                                 "name": "AWS_ACCESS_KEY_ID",
@@ -102,5 +102,3 @@ def tfjoblauncher_args(step, s3bucketexportpath, args):
     }
 
     return chief, worker
-
-

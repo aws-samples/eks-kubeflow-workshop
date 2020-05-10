@@ -27,7 +27,7 @@ This repo is a Kubeflow Workshop on EKS and it will covers most of the cutting e
 - [Distributed Training](notebooks/03_Distributed_Training)
 - [Tensorflow Extended](notebooks/04_Tensorflow_Extended)
 - [Kubeflow Pipeline](notebooks/05_Kubeflow_Pipeline)
-- Serving
+- [Serving](notebooks/06_Serving)
 - [Experiment Tracking](notebooks/07_Experiment_Tracking)
 - [HyperParameter Tuning](notebooks/08_Hyperparameter_Tuning)
 - [Monitoring](notebooks/09_Monitoring)

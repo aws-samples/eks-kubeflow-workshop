@@ -1,3 +1,2 @@
-## Kubeflow Labs on EKS
+## Kubeflow logs in CloudWatch
 
-Placeholder

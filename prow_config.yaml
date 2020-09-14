@@ -1,0 +1,45 @@
+presubmits:
+  aws-samples/eks-kubeflow-workshop:
+  - name: presubmit-workshop-verify
+    branches:
+    - master
+    decorate: true
+    always_run: true
+    spec:
+      containers:
+      - image: golang:1.12.5
+        command:
+        - /bin/bash
+        args:
+        - -c
+        - "echo 'presubmit testing!'"
+  - name: presubmit-workshop-e2e
+    branches:
+    - master
+    decorate: true
+    always_run: true
+    spec:
+      containers:
+      - image: 527798164940.dkr.ecr.us-west-2.amazonaws.com/tensorflow-1.15.2-notebook-cpu:1.1.0
+        command:
+        - /bin/bash
+        args:
+        - -c
+        - "pip install papermill; mkdir -p /tmp/eks-kubeflow/workshop/test_output; python tests/*.py"
+
+postsubmits:
+  aws-samples/eks-kubeflow-workshop:
+  - name: postsubmit-workshop-verify
+    branches:
+    - master
+    decorate: true
+    always_run: true
+    spec:
+      containers:
+      - image: golang:1.12.5
+        command:
+        - /bin/bash
+        args:
+        - -c
+        - "echo 'postsubmit testing!'"
+

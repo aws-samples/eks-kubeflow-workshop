@@ -125,3 +125,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Ignore papermill output notebooks
+tests/output/*.ipynb

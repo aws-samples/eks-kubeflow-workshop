@@ -18,7 +18,7 @@ kind: ClusterConfig
 metadata:
   name: kfworkshop
   region: us-west-2
-  version: '1.13'
+  version: '1.17'
 # If your region has multiple availability zones, you can specify 3 of them.
 availabilityZones: ["us-west-2b", "us-west-2c", "us-west-2d"]
 

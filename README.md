@@ -19,7 +19,8 @@ This repo is a Kubeflow Workshop on EKS and it will covers most of the cutting e
 
 1. [Create an EKS cluster](docs/cluster.md) or bring your own EKS cluster.
 2. [Setup up Kubeflow](docs/kubeflow.md)
-3. [Post Installation](docs/post-install.md)
+3. [Set up Notebook Server](docs/notebook-server.md)
+4. [Post Installation](docs/post-install.md)
 
 ## Labs
 - [Model Development in Jupyter Notebook](notebooks/01_Jupyter_Notebook)
